@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "appso"
+require "app_prism"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
