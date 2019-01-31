@@ -1,3 +1,3 @@
 module AppPrism
-  VERSION = "0.0.2"
+  VERSION = "0.0.12"
 end
