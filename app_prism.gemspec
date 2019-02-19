@@ -6,8 +6,8 @@ require "app_prism/version"
 Gem::Specification.new do |spec|
   spec.name          = "app_prism"
   spec.version       = AppPrism::VERSION
-  spec.authors       = ["Denys Bazarnyi"]
-  spec.email         = ["den.bazarny@gmail.com"]
+  spec.authors       = ["Denys Bazarnyi, Dmitriy Konovalov"]
+  spec.email         = ["den.bazarny@gmail.com, d.konovalov.39@gmail.com"]
 
   spec.summary       = %q{Write a short summary, because RubyGems requires one.}
   spec.description   = %q{Write a longer description or delete this line.}
