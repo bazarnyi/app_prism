@@ -1,0 +1,9 @@
+detectors:
+  IrresponsibleModule:
+    enabled: false
+  NestedIterators:
+    enabled: false
+  DuplicateMethodCall:
+    max_calls: 2
+  TooManyInstanceVariables:
+    max_instance_variables: 5
