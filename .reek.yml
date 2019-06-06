@@ -1,0 +1,39 @@
+detectors:
+  IrresponsibleModule:
+    enabled: false
+  NestedIterators:
+    enabled: false
+  DuplicateMethodCall:
+    max_calls: 2
+    exclude:
+      - AppPrism::Finders#element
+      - AppPrism::Platforms::AppiumPlatform#swipe_down
+      - AppPrism::Platforms::AppiumPlatform#swipe_up
+  TooManyInstanceVariables:
+    max_instance_variables: 5
+  TooManyStatements:
+    max_statements: 10
+  NilCheck:
+    exclude:
+      - AppPrism::Elements::Element#visible?
+  ManualDispatch:
+    exclude:
+      - AppPrism::Finders#expected_element
+  UtilityFunction:
+    exclude:
+      - AppPrism::HelperMethods#android
+      - AppPrism::HelperMethods#ios?
+      - AppPrism::ScreenFactory#class_from_string
+  FeatureEnvy:
+    exclude:
+      - AppPrism::Platforms::AppiumPlatform#swipe_down
+      - AppPrism::Platforms::AppiumPlatform#swipe_up
+  InstanceVariableAssumption:
+    exclude:
+      - AppPrism::Platforms::AppiumPlatform
+  SubclassedFromCoreClass:
+    exclude:
+      - AppPrism::Sections::SectionsCollection #rework later, this might be really not good
+  ModuleInitialize:
+    exclude:
+      - AppPrism

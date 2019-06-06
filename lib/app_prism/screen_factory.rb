@@ -1,6 +1,6 @@
 module AppPrism
   module ScreenFactory
-    def on_page(page_class, *args)
+    def on_page(page_class, _args)
       page_class = class_from_string(page_class) if page_class.is_a? String
       @current_screen = page_class.new(@browser)
     end
