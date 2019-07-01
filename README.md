@@ -1,8 +1,8 @@
 # AppPrsim
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/app_prism`. To experiment with that code, run `bin/console` for an interactive prompt.
+[![CircleCI](https://circleci.com/gh/bazarnyi/app_prism.svg?style=svg&circle-token=0a76b7197e2a4894e8958548cb5203077a117e38)](https://circleci.com/gh/bazarnyi/app_prism)
 
-TODO: Delete this and the text above, and describe your gem
+_A Multi-platform Page Object Model DSL for Appium_
 
 ## Installation
 
@@ -14,7 +14,7 @@ gem 'app_prism'
 
 And then execute:
 
-    $ bundle
+    $ bundle install
 
 Or install it yourself as:
 
@@ -22,13 +22,69 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Here's an overview of how SitePrism is designed to be used:
 
-## Development
+```ruby
+# define your app screens
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+class BaseScreen
+  include AppPrism
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+  element :app_icon,      android: { id: 'ViewActivityIntro_AppLogo' },
+                          ios: { xpath: '//XCUIElementTypeIcon[@name="some name here"]' }
+
+  element :notification,  android: { accessibility_id: 'NotificationShortLookView' },
+                          ios: { accessibility_id: 'NotificationShortLookView' }
+
+  element :toolbar_done,  android: { xpath: '//android.widget.LinearLayout[@content-desc="ViewActivityIntro_Toolbar"]/android.widget.TextView' },
+                          ios: { xpath: '//XCUIElementTypeToolbar[@name="Toolbar"]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeButton[@name="DONE" or @name="Done"]' }
+
+  def wheelpicker
+    @driver.find_elements(:class_name, 'XCUIElementTypePickerWheel').first
+  end
+end
+
+class LogInScreen < BaseScreen
+  element :log_in_button, android: { id: 'ButtonRoundCorner_CustomImageView_Icon' },
+                                ios: { accessibility_id: 'LOG IN' }
+end
+
+# define sections used on multiple screens or multiple times on one screen
+
+class ScreenDialog < AppPrism::Sections::ScreenSection
+  element :title, android: { id: 'title' },
+                  ios: { xpath: '//XCUIElementTypeStaticText[@name="Skip account"]' }
+
+  element :yes,   android: { id: 'FragmentTwoButtonAlertDialog_Button_Positive' },
+                  ios: { accessibility_id: 'Yes' }
+
+  element :no,    android: { id: 'FragmentTwoButtonAlertDialog_Button_Negative' },
+                  ios: { accessibility_id: 'No' }
+end
+
+# Basic usage in tests are very similar to usage of Site Prism gem for Web UI test automation
+# the only difference is that page factory approach is used to better manage screens interractions
+
+Given(/^I launch the app$/) do
+  if ios?
+    accept_ios_notification
+  else
+    wait_while_app_is_loading
+  end
+end
+
+Given(/^I swipe demo screens to the Sign in form$/) do
+  wait_for_activity_to_load 'IntroductionActivity' if android?
+  wait_for_element 'view pager', 'welcome'
+  6.times do
+    swipe 'left'
+  end
+end
+
+Then(/^I see relevant skip sign in notification dialog$/) do
+  expect(on(WelcomeScreen).screen_dialog.title_element.text).to include 'some text'
+end
+```
 
 ## Contributing
 
